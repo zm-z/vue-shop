@@ -132,13 +132,6 @@ export default {
       this.getMenuList()
     },
   data() {
-      //  var validatePass = (rule, value, callback) => {
-      //   if (value === '') {
-      //     callback(new Error('请输入密码'));
-      //   } else {
-      //     callback();
-      //   }
-      // };
       return {
           userlist:[],
           search:'',
@@ -182,7 +175,6 @@ export default {
 
       getMenuList() {
       this.axios.post('/api/getMenuList').then(res=>{
-        //console.log(res.data)
         this.userlist=res.data
       })
     },
@@ -217,24 +209,17 @@ export default {
       //修改
       edit(id){
         this.update=true
-        console.log(id)
-        console.log(this.numberValidateForm)
-        this.axios.post('/api/update').then(res=>{
-          console.log(res)
-          
-        })
+        this.axios.post('/api/update',{id:id,newlist:this.newlist}).then(res=>{
+           this.getMenuList() 
+        }) 
       },
 
       //删除
       del(id){
-        //console.log(id)
         this.axios.post('/api/deluser',{id:id}).then(res=>{
-          //console.log(res)
           this.getMenuList()
         })
       },
-
-      //
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

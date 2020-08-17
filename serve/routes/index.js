@@ -45,7 +45,6 @@ connection.query(`update menu set state=? where id=?`,[req.body.state,req.body.i
 
 //添加用户
 router.post('/adduser',(req,res)=>{
-  //console.log(req.body)
   let sql=`INSERT INTO menu SET ?`
   connection.query(sql,req.body,(err,results)=>{
     if(err){
@@ -57,28 +56,20 @@ router.post('/adduser',(req,res)=>{
 })
 
 //修改用户信息
-router.post('/update/+this.id',(req,res)=>{
- console.log(req.body)
-  //let{id,list}=req.body
-  //console.log(id)
- // console.log(list)
-  // //let data=[id,list.username,list.email,list.mobile,list.role_name]
-  // connection.query(`update menu set username=a,email=a,mobile=a,role_name=a where id=?`,id,(err,results)=>{
-  //   if(err){
-  //     throw err
-  //   }else{
-  //     res.send('ok')
-  //   }
-  // })
-  res.send('不会')
+
+router.post('/update',(req,res)=>{
+  const {id,newlist}=req.body
+  let sql='update menu set username ?,email=?,mobile=?,role_name=?,state=? where id=? '
+  let data=[id,newlist.username,newlist.email,newlist.mobile,newlist.role_name,newlist.state]
+  connection.query(sql,data,(err,results)=>{
+    if(err){
+      throw err
+    }else{
+      res.send('ok')
+    }
+  })
 })
 
-
-// //删除
-// router.post('/deluser',(req,res)=>{
-//   console.log(req.body)
-//   //connection.query(`DELETE FROM menu WHERE id`)
-// })
 // //删除数据
 router.post('/deluser',(reg,res)=>{
   connection.query("DELETE FROM menu WHERE id=?",[reg.body.id],(err,results)=>{
