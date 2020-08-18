@@ -40,59 +40,32 @@
     </el-table>
 </el-card>
    <!-- 添加用户弹出框 -->
-   <el-dialog
-  title="添加用户信息"
-  :visible.sync="dialogVisible"
-  width="50%"
-  :before-close="handleClose">
-  <!-- 主体信息 -->
-  <el-form :model="numberValidateForm" status-icon ref="numberValidateForm" label-width="100px" class="demo-ruleForm">
-  <el-form-item
-    label="用户名"
-    prop="username"
-    :rules="[
-      { required: true, message: '用户名不能为空'},
-    ]"
-  >
-    <el-input type="text" v-model.number="numberValidateForm.username" autocomplete="off" class="demo-dynamic"></el-input>
-  </el-form-item>
-  <el-form-item
-    label="邮箱"
-    prop="email"
-    :rules="[
-      { required:true, message: '请输入邮箱地址', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-    ]"
-  >
-    <el-input type="email"  v-model.number="numberValidateForm.email" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item
-    label="电话"
-    prop="mobile"
-    :rules="[
-      { required: true, message: '电话不能为空'},
-      { type: 'number', message: '电话格式不对'},
-      
-    
-    ]"
-  >
-    <el-input type="text" v-model.number="numberValidateForm.mobile" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item
-    label="别名"
-    prop="role_name"
-    :rules="[
-      { required: true, message: '别名不能为空'},
-      //{ type: 'number', message: '邮箱格式不对'}
-    ]"
-  >
-    <el-input type="text" v-model.number="numberValidateForm.role_name" autocomplete="off"></el-input>
-  </el-form-item>
-</el-form>
-  <span slot="footer" class="dialog-footer" style="margin-right:40%">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="adduser('dynamicValidateForm')">确 定</el-button>
-  </span>
+  <el-dialog title="添加用户" :visible.sync="dialogVisible">
+  <el-form
+        :model="numberValidateForm"
+        status-icon
+        :rules="rules"
+        ref="numberValidateForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="账号" prop="username">
+          <el-input type="password" v-model="numberValidateForm.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input type="email" v-model="numberValidateForm.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" prop="mobile">
+          <el-input  v-model="numberValidateForm.mobile" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="别名" prop="role_name">
+          <el-input  v-model="numberValidateForm.role_name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="adduser('numberValidateForm')">确定</el-button>
+          <el-button @click="dialogVisible=false">取消</el-button>
+        </el-form-item>
+      </el-form>
 </el-dialog>
 <!-- 修改 -->
 <el-dialog title="用户信息" :visible.sync="update">
@@ -197,16 +170,20 @@ export default {
       },
 
       //用户添加
-      adduser(numberValidateForm){
-         
-             this.axios.post('/api/adduser',this.numberValidateForm)
-            .then(res=>{
-             this.dialogVisible=false
-             this.getMenuList()
-          
-        }); 
+      adduser(numberValidateForm){        
+             this.$refs[numberValidateForm].validate((valid) => {
+          if (valid) {
+           this.axios.post('/api/adduser',this.numberValidateForm)
+           .then(res=>{
+            this.dialogVisible=false
+            this.getMenuList()
+           })
+            this.$message('添加成功')
+              }else{
+                this.$message('添加失败');
+              }
+            })
       },
-
       //修改
       edit(id){
         this.update=true
@@ -233,18 +210,6 @@ export default {
           this.getMenuList()
         })
       },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$message('更改成功')
-            this.update=false
-          this.getMenuList()
-              }else{
-                this.$message('更改失败');
-              }
-            })
-            
-      }
           } ,
         
   
