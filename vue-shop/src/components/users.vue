@@ -15,7 +15,7 @@
 </div>
     <el-table :data="newuserlist" stripe>
       <el-table-column label="姓名" prop="username" width="80px"></el-table-column>
-      <el-table-column label="邮箱" prop="email" width="120px"></el-table-column>
+      <el-table-column label="邮箱" prop="email" width="200px"></el-table-column>
       <el-table-column label="电话" prop="mobile"></el-table-column>
       <el-table-column label="角色" prop="role_name"></el-table-column>
       <el-table-column label="状态" prop="state">
@@ -117,7 +117,7 @@
           <el-input  v-model="newlist.role_name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('newlist')">确定</el-button>
+          <el-button type="primary" @click="changelist('newlist')">确定</el-button>
           <el-button @click="update=false">取消</el-button>
         </el-form-item>
       </el-form>
@@ -151,6 +151,7 @@ export default {
           mobile:'',
           role_name:'',
         },
+        changeid:0,
          rules: {
           username: [
             { required: true, message: '请输入名称', trigger: 'blur' },
@@ -209,9 +210,21 @@ export default {
       //修改
       edit(id){
         this.update=true
-        this.axios.post('/api/update',{id:id,newlist:this.newlist}).then(res=>{
-           this.getMenuList() 
-        }) 
+        this.changeid=id
+      },
+      changelist(newlist){
+        this.$refs[newlist].validate((valid) => {
+          if (valid) {
+            this.axios.post('/api/update',{id:this.changeid,newlist:this.newlist}).then(res=>{
+              this.newlist=''
+              this.update=false
+              this.getMenuList()
+        })
+            this.$message('更改成功')
+              }else{
+                this.$message('更改失败');
+              }
+            })
       },
 
       //删除

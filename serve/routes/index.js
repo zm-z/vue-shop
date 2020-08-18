@@ -45,6 +45,7 @@ connection.query(`update menu set state=? where id=?`,[req.body.state,req.body.i
 
 //添加用户
 router.post('/adduser',(req,res)=>{
+  console.log(req);
   let sql=`INSERT INTO menu SET ?`
   connection.query(sql,req.body,(err,results)=>{
     if(err){
@@ -56,11 +57,10 @@ router.post('/adduser',(req,res)=>{
 })
 
 //修改用户信息
-
 router.post('/update',(req,res)=>{
-  const {id,newlist}=req.body
-  let sql='update menu set username ?,email=?,mobile=?,role_name=?,state=? where id=? '
-  let data=[id,newlist.username,newlist.email,newlist.mobile,newlist.role_name,newlist.state]
+  let{id,newlist}=req.body
+  let sql=`UPDATE menu SET username=?,email=?,mobile=?,role_name=?,state=? where id=? `
+  let data=[newlist.username,newlist.email,newlist.mobile,newlist.role_name,newlist.state,id]
   connection.query(sql,data,(err,results)=>{
     if(err){
       throw err
