@@ -146,7 +146,6 @@ export default {
       }
     },
      methods: {
-
       getMenuList() {
       this.axios.post('/api/getMenuList').then(res=>{
         this.userlist=res.data
@@ -176,6 +175,7 @@ export default {
            this.axios.post('/api/adduser',this.numberValidateForm)
            .then(res=>{
             this.dialogVisible=false
+            this.numberValidateForm=''
             this.getMenuList()
            })
             this.$message('添加成功')
@@ -210,10 +210,7 @@ export default {
           this.getMenuList()
         })
       },
-          } ,
-        
-  
-   
+  } ,
     computed:{
       //实现搜索功能
       newuserlist:function(){
