@@ -30,7 +30,7 @@
            <el-button type="primary" icon="el-icon-edit" @click="edit(scope.row.id)"></el-button>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="查看" placement="top-start">
-           <el-button type="warning" icon="el-icon-share"></el-button>
+           <el-button type="warning" icon="el-icon-share" @click="look(scope.row.id)"></el-button>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
            <el-button type="anger" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
@@ -50,7 +50,7 @@
         class="demo-ruleForm"
       >
         <el-form-item label="账号" prop="username">
-          <el-input type="password" v-model="numberValidateForm.username" autocomplete="off"></el-input>
+          <el-input type="password"  v-model="numberValidateForm.username" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input type="email" v-model="numberValidateForm.email" autocomplete="off"></el-input>
@@ -68,7 +68,7 @@
       </el-form>
 </el-dialog>
 <!-- 修改 -->
-<el-dialog title="用户信息" :visible.sync="update">
+<el-dialog title="修改用户信息" :visible.sync="update">
   <el-form
         :model="newlist"
         status-icon
@@ -95,7 +95,18 @@
         </el-form-item>
       </el-form>
 </el-dialog>
-
+<!-- 查看弹出框 -->
+<el-dialog title="用户信息" :visible.sync="see" width="40%">
+  <el-form>
+    <el-form-item>
+      <span>用户名 : {{showlist.username}}</span><br>
+      <span>电话 : {{showlist.mobile}}</span><br>
+      <span>邮箱 : {{showlist.email}}</span><br>
+      <span>曾用名 : {{showlist.role_name}}</span><br>
+      <el-button @click="see=false" style="margin-left:350px">取消</el-button>
+    </el-form-item>
+  </el-form>
+</el-dialog>
   </div>
 </template>
 
@@ -124,6 +135,9 @@ export default {
           mobile:'',
           role_name:'',
         },
+        //查看
+        see:false,
+        showlist:'',
         changeid:0,
          rules: {
           username: [
@@ -210,6 +224,13 @@ export default {
           this.getMenuList()
         })
       },
+      //查看
+      look(id){
+        this.axios.post('/api/look',{id:id}).then(res=>{
+          this.see=true
+          this.showlist=res.data[0];
+        })
+      }
   } ,
     computed:{
       //实现搜索功能

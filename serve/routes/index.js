@@ -81,7 +81,18 @@ router.post('/deluser',(reg,res)=>{
   })
 })
 
+//查看数据
+router.post('/look',(req,res)=>{
+  let sql=`select * from menu where id=?`
+  connection.query(sql,[req.body.id],(err,results)=>{
+    if(err){
+      throw err
+    }else{
+      res.send(results)
 
+    }
+  })
+})
 
 module.exports = router;
 
