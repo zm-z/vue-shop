@@ -7,7 +7,7 @@
 </el-breadcrumb>
 <el-card style="margin-top:20px">
     <!-- 搜索 -->
-<div style="margin-top: 15px;">
+<div>
   <el-input placeholder="请输入内容" style="width:250px" v-model="search">
     <template slot="append">搜索</template>
   </el-input>
@@ -38,6 +38,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页 -->
+     <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pagenum"
+      :page-sizes="[1, 2, 5, 10]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
 </el-card>
    <!-- 添加用户弹出框 -->
   <el-dialog title="添加用户" :visible.sync="dialogVisible">
@@ -117,6 +127,11 @@ export default {
     },
   data() {
       return {
+          //当前页数
+          pagenum:1,
+          //每页多少条
+          pagesize:2,
+          total:10,
           userlist:[],
           search:'',
           dialogVisible: false,
@@ -161,8 +176,10 @@ export default {
     },
      methods: {
       getMenuList() {
+      this.pagenum=1;
+      this.pagesize=2;
       this.axios.post('/api/getMenuList').then(res=>{
-        this.userlist=res.data
+      this.userlist=res.data
       })
     },
     //监听switch状态改变
@@ -230,6 +247,16 @@ export default {
           this.see=true
           this.showlist=res.data[0];
         })
+      },
+
+      //分页
+      handleSizeChange(val) {
+        this.pagenum=val
+        this.getMenuList()
+      },
+      handleCurrentChange(val) {
+        this.pagesize=val
+        this.getMenuList()
       }
   } ,
     computed:{

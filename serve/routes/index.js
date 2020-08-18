@@ -21,8 +21,9 @@ router.post('/login', (req, res)=> {
    })
 });
 
+//获取数据
 router.post('/getMenuList', (req, res)=> {
-const mysql=`select * from menu`;
+const mysql=`select * from menu `;
 connection.query(mysql,(err,data)=>{
   if(err){
     throw err
@@ -31,6 +32,7 @@ connection.query(mysql,(err,data)=>{
   }
 })
 });
+
 
 //状态改变
 router.post('/stateChange',(req,res)=>{
@@ -93,6 +95,7 @@ router.post('/look',(req,res)=>{
     }
   })
 })
+
 
 module.exports = router;
 
