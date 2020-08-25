@@ -122,16 +122,19 @@
 
 <script>
 export default {
+  // created(){
+  //     this.getMenuList()
+  //   },
   created(){
       this.getMenuList()
     },
   data() {
       return {
-          //当前页数
+            //当前页数
           pagenum:1,
           //每页多少条
-          pagesize:2,
-          total:10,
+          pagesize:5,
+          total:20,
           userlist:[],
           search:'',
           dialogVisible: false,
@@ -175,12 +178,9 @@ export default {
       }
     },
      methods: {
-      getMenuList() {
-      this.pagenum=1;
-      this.pagesize=2;
-      this.axios.post('/api/getMenuList').then(res=>{
-      this.userlist=res.data
-      })
+    async getMenuList() {
+      const {data: res}=await this.axios.post('/api/getMenuList',{pagesize:this.pagesize,pagenum:this.pagenum})
+      this.userlist=res
     },
     //监听switch状态改变
        stateChange(userinfo){
@@ -250,13 +250,18 @@ export default {
       },
 
       //分页
+      changepage(){
+        this.axios.post("/api/changepage",{pagesize:this.pagesize,pagenum:this.pagenum}).then(res=>{
+          this.userlist=res.data
+        })
+      },
       handleSizeChange(val) {
-        this.pagenum=val
-        this.getMenuList()
+        this.pagesize=val
+        this.changepage()
       },
       handleCurrentChange(val) {
-        this.pagesize=val
-        this.getMenuList()
+        this.pagenum=val
+        this.changepage()
       }
   } ,
     computed:{

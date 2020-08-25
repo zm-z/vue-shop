@@ -20,10 +20,22 @@ router.post('/login', (req, res)=> {
      }
    })
 });
-
 //获取数据
 router.post('/getMenuList', (req, res)=> {
-const mysql=`select * from menu `;
+const mysql=`select * from menu limit 5`;
+connection.query(mysql,(err,data)=>{
+  if(err){
+    throw err
+  }else{
+    res.send(data)
+  }
+})
+});
+//分页
+router.post('/changepage', (req, res)=> {
+  let{pagesize,pagenum}=req.body
+  let a=((req.body.pagenum-1)*req.body.pagesize)
+  const mysql=`select * from menu limit ${a},${pagesize}`;
 connection.query(mysql,(err,data)=>{
   if(err){
     throw err
