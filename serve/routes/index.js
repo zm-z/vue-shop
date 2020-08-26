@@ -22,7 +22,7 @@ router.post('/login', (req, res)=> {
 });
 //获取数据
 router.post('/getMenuList', (req, res)=> {
-const mysql=`select * from menu limit 5`;
+const mysql=`select * from menu limit 4`;
 connection.query(mysql,(err,data)=>{
   if(err){
     throw err
@@ -108,6 +108,17 @@ router.post('/look',(req,res)=>{
   })
 })
 
+//权限列表
+router.post('/getquanxian',(req,res)=>{
+  let sql=`select * from quanxianlist`
+  connection.query(sql,(err,data)=>{
+    if(err){
+      throw err
+    }else{
+      res.send(data)
+    }
+  })
+});
 
 module.exports = router;
 

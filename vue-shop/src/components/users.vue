@@ -43,7 +43,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="pagenum"
-      :page-sizes="[1, 2, 5, 10]"
+      :page-sizes="[1, 2, 4]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
@@ -133,7 +133,7 @@ export default {
             //当前页数
           pagenum:1,
           //每页多少条
-          pagesize:5,
+          pagesize:4,
           total:20,
           userlist:[],
           search:'',
