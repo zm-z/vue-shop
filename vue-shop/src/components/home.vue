@@ -40,7 +40,7 @@
           <span>权限管理</span>
         </template>
         <!-- 二集菜单 -->
-      <el-menu-item index="2-1">
+      <el-menu-item index="Roles">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>角色列表</span>

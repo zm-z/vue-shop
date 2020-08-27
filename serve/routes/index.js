@@ -120,5 +120,16 @@ router.post('/getquanxian',(req,res)=>{
   })
 });
 
+//角色列表
+router.post('/getroleslist',(req,res)=>{
+  let sql="select * from jiaoselist"
+  connection.query(sql,(err,data)=>{
+    if(err){
+      throw err
+    }else{
+      res.send(data)
+    }
+  })
+})
 module.exports = router;
 
