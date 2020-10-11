@@ -131,5 +131,16 @@ router.post('/getroleslist',(req,res)=>{
     }
   })
 })
+//vue-demo
+router.post('/addcar',(req,res)=>{
+  let sql="select * from goods"
+  connection.query(sql,(err,data)=>{
+    if(err){
+      throw err
+    }else{
+      res.send(data)
+    }
+  })
+})
 module.exports = router;
 
